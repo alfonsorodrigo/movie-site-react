@@ -1,6 +1,7 @@
 import React from "react";
 import { Layout } from "antd";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import MenuTop from "./components/MenuTop";
 
 // Importing Pages
 import Home from "./pages/Home";
@@ -15,7 +16,9 @@ const App = () => {
   return (
     <Layout>
       <Router>
-        <Header>Header</Header>
+        <Header>
+          <MenuTop />
+        </Header>
         <Content>
           <Switch>
             <Route path="/" exact={true}>
