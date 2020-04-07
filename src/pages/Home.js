@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import useFetch from "../hooks/useFetch";
 import SliderMovies from "../components/SliderMovies";
 import MovieList from "../components/MovieList";
+import Footer from "../components/Footer";
 import { API_URL, API_KEY } from "../utils/constants";
 
 import { Row, Col } from "antd";
@@ -32,6 +33,7 @@ const Home = () => {
           />
         </Col>
       </Row>
+      <Footer />
     </Fragment>
   );
 };
