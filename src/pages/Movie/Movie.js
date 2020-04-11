@@ -1,10 +1,13 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Row, Col, Button } from "antd";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import useFetch from "../../hooks/useFetch";
 import { API_URL, API_KEY } from "../../utils/constants";
 import Loading from "../../components/Loading";
+import ModalVideo from "../../components/ModalVideo";
+import { PlayCircleOutlined } from "@ant-design/icons";
+
 import "./Movie.scss";
 
 const Movie = () => {
@@ -48,7 +51,33 @@ const PosterMovie = ({ image }) => {
 };
 
 const MovieInfo = ({ movieInfo }) => {
-  const { title, release_date, overview, genres } = movieInfo;
+  const { id, title, release_date, overview, genres } = movieInfo;
+
+  const [isVisibleModal, setisVisibleModal] = useState(false);
+  const videoMovie = useFetch(
+    `${API_URL}/movie/${id}/videos?api_key=${API_KEY}&language=en-US`
+  );
+
+  const openModal = () => setisVisibleModal(true);
+  const closeModal = () => setisVisibleModal(false);
+
+  const renderVideo = () => {
+    if (videoMovie.result && videoMovie.result.results.length > 0) {
+      return (
+        <Fragment>
+          <Button onClick={openModal} icon={<PlayCircleOutlined />}>
+            Ver Trailer
+          </Button>
+          <ModalVideo
+            videoKey={videoMovie.result.results[0].key}
+            videoPlatform={videoMovie.result.results[0].site}
+            isOpen={isVisibleModal}
+            close={closeModal}
+          />
+        </Fragment>
+      );
+    }
+  };
 
   return (
     <Fragment>
@@ -57,7 +86,7 @@ const MovieInfo = ({ movieInfo }) => {
           {title}
           <span>{moment(release_date, "YYYY-MM-DD").format("YYYY")}</span>
         </h1>
-        <Button>Ver Trailer</Button>
+        {renderVideo()}
       </div>
       <div className="movie__info-content">
         <h3>General</h3>
