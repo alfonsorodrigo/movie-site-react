@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Row, Col } from "antd";
 import { API_URL, API_KEY } from "../utils/constants";
 import Footer from "../components/Footer";
 import Loading from "../components/Loading";
 import MovieCatalog from "../components/MovieCatalog";
+import Pagination from "../components/Pagination";
 
 const NewMovies = () => {
   const [movieList, setMovieList] = useState({});
@@ -19,6 +20,9 @@ const NewMovies = () => {
       setMovieList(movies);
     })();
   }, [page]);
+
+  const onChangePage = (page) => setPage(page);
+
   return (
     <Row>
       <Col span="24" style={{ textAlign: "center", marginTop: 25 }}>
@@ -27,23 +31,32 @@ const NewMovies = () => {
         </h1>
       </Col>
       {movieList.results ? (
-        <Col
-          span="24"
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-around",
-          }}
-        >
-          <MovieCatalog movies={movieList} />
-        </Col>
+        <Fragment>
+          <Col
+            span={24}
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-around",
+            }}
+          >
+            <MovieCatalog movies={movieList} />
+          </Col>
+          <Col span={24}>
+            <Pagination
+              currentPage={movieList.page}
+              totalItem={movieList.total_results}
+              onChangePage={onChangePage}
+            />
+          </Col>
+        </Fragment>
       ) : (
-        <Col span="24">
+        <Col span={24}>
           <Loading />
         </Col>
       )}
 
-      <Col span="24">
+      <Col span={24}>
         <Footer />
       </Col>
     </Row>
