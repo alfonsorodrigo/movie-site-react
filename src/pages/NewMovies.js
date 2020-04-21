@@ -16,7 +16,6 @@ const NewMovies = () => {
         `${API_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`
       );
       const movies = await request.json();
-      console.log(movies);
       setMovieList(movies);
     })();
   }, [page]);
